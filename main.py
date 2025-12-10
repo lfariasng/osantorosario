@@ -6,8 +6,11 @@ RUNENVIRONMENT = os.getenv("RUNENVIRONMENT")
 WEBSITEURL = os.getenv("WEBSITEURL")
 
 app = Flask(__name__, static_url_path="", static_folder="static", subdomain_matching=True)
-app.secret_key = b'048j79hdfosdFGh90h7es9f8jsdoFDG3F148d0nsdf8zt853fhxec'
+secret = os.environ.get("FLASK_SECRET_KEY")
+if secret is None:
+    raise RuntimeError("FLASK_SECRET_KEY environment variable not set")
 
+app.secret_key = secret.encode()  # convert string → bytes
 
 # Páginas Dedicadas a Documentos
 @app.route('/')
